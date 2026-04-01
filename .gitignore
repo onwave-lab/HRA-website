@@ -23,3 +23,6 @@ node_modules/
 
 # Compliance screenshot captures
 compliance-pdfs/
+
+# Audit / planning documents (not part of the build)
+Second-Opinion-Finder-Audit.md
