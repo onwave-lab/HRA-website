@@ -2,16 +2,18 @@
    Second Opinion Assessment — Quiz Styles
    ========================================= */
 
-/* Local variables for the quiz tool */
-.sof-section {
-  --sof-navy: var(--navy-800);
-  --sof-gold: var(--gold-500);
-  --sof-gold-hover: var(--gold-400);
+/* Local variables for the quiz tool — applied to both the section wrapper and the card
+   itself so the quiz works in any context (standalone page, homepage embed, exit popup) */
+.sof-section,
+.sof-quiz-card {
+  --sof-navy: var(--navy-800, #1a365d);
+  --sof-gold: var(--gold-500, #d4a853);
+  --sof-gold-hover: var(--gold-400, #e2bd6f);
   --sof-cream: #FAFAF7;
-  --sof-lgray: var(--gray-200);
-  --sof-gray: var(--gray-500);
-  --sof-text: var(--gray-700);
-  --sof-heading: var(--gray-900);
+  --sof-lgray: var(--gray-200, #e2e8f0);
+  --sof-gray: var(--gray-500, #64748b);
+  --sof-text: var(--gray-700, #334155);
+  --sof-heading: var(--gray-900, #0f172a);
 }
 
 /* Page header */
