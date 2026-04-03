@@ -541,6 +541,48 @@ p:last-child {
   border-color: var(--gold-400) !important;
 }
 
+/* Secondary CTA — Second Opinion Assessment button */
+.nav-cta-secondary {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+  padding: var(--space-2) var(--space-4) !important;
+  text-align: center;
+  white-space: nowrap;
+  border-color: var(--white) !important;
+  color: var(--white) !important;
+  background: transparent !important;
+}
+
+.nav-cta-secondary:hover {
+  background: var(--white) !important;
+  color: var(--navy-800) !important;
+  border-color: var(--white) !important;
+}
+
+/* Secondary CTA when navbar is scrolled (white background) */
+.navbar.is-scrolled .nav-cta-secondary {
+  border-color: var(--navy-800) !important;
+  color: var(--navy-800) !important;
+}
+
+.navbar.is-scrolled .nav-cta-secondary:hover {
+  background: var(--navy-800) !important;
+  color: var(--white) !important;
+  border-color: var(--navy-800) !important;
+}
+
+/* Non-transparent navbar (client-portal, second-opinion, etc.) */
+.navbar:not(.navbar--transparent) .nav-cta-secondary {
+  border-color: var(--navy-800) !important;
+  color: var(--navy-800) !important;
+}
+
+.navbar:not(.navbar--transparent) .nav-cta-secondary:hover {
+  background: var(--navy-800) !important;
+  color: var(--white) !important;
+  border-color: var(--navy-800) !important;
+}
+
 .nav-link::after {
   content: '';
   position: absolute;
@@ -848,6 +890,10 @@ p:last-child {
 
   .nav-cta {
     margin-top: var(--space-4);
+  }
+
+  .nav-cta-secondary {
+    margin-top: var(--space-2);
   }
 
   .nav-phone {
@@ -2642,7 +2688,7 @@ button[type="submit"] .btn-spinner + span {
 }
 
 /* ----------------------------------------
-   Exit Intent Popup
+   Exit Intent Popup — Second Opinion Assessment
    ---------------------------------------- */
 .exit-popup {
   position: fixed;
@@ -2672,21 +2718,14 @@ button[type="submit"] .btn-spinner + span {
 .exit-popup-content {
   position: relative;
   background: var(--white);
-  border-radius: var(--radius-xl);
-  padding: var(--space-10) var(--space-8);
-  max-width: 620px;
+  border-radius: 4px;
+  max-width: 700px;
   width: 100%;
-  text-align: center;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-normal) var(--ease-out-cubic);
-}
-
-.exit-popup-calendar {
-  max-height: 350px;
   overflow-y: auto;
-  border-radius: 8px;
-  margin-bottom: var(--space-4);
+  max-height: 90vh;
 }
 
 .exit-popup.is-visible .exit-popup-content {
@@ -2695,120 +2734,31 @@ button[type="submit"] .btn-spinner + span {
 
 .exit-popup-close {
   position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
+  top: var(--space-3);
+  right: var(--space-3);
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--gray-100);
+  background: rgba(0, 0, 0, 0.08);
   border: none;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 22px;
   color: var(--gray-500);
   cursor: pointer;
   transition: all var(--duration-fast) ease;
+  z-index: 1;
 }
 
 .exit-popup-close:hover {
-  background: var(--gray-200);
+  background: rgba(0, 0, 0, 0.15);
   color: var(--gray-700);
-}
-
-.exit-popup-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto var(--space-6);
-  background: var(--navy-50);
-  border-radius: 50%;
-  color: var(--navy-600);
-}
-
-.exit-popup-content h3 {
-  font-family: var(--font-heading);
-  font-size: var(--text-2xl);
-  color: var(--navy-900);
-  margin-bottom: var(--space-3);
-}
-
-.exit-popup-content p {
-  color: var(--gray-600);
-  margin-bottom: var(--space-6);
-  line-height: 1.6;
-}
-
-.exit-popup-form {
-  margin-bottom: var(--space-4);
-}
-
-.exit-popup-form-row {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.exit-popup-input {
-  flex: 1;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--gray-300);
-  border-radius: var(--radius-md);
-  font-size: var(--text-base);
-  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-}
-
-.exit-popup-input:focus {
-  outline: none;
-  border-color: var(--navy-500);
-  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
-}
-
-.exit-popup-disclaimer {
-  font-size: var(--text-xs);
-  color: var(--gray-500);
-  margin-top: var(--space-2);
-}
-
-.exit-popup-divider {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  margin: var(--space-4) 0;
-  color: var(--gray-400);
-  font-size: var(--text-sm);
-}
-
-.exit-popup-divider::before,
-.exit-popup-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--gray-200);
-}
-
-.exit-popup-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.exit-popup-actions .btn {
-  width: 100%;
 }
 
 @media (max-width: 480px) {
   .exit-popup-content {
-    padding: var(--space-8) var(--space-6);
-  }
-
-  .exit-popup-form-row {
-    flex-direction: column;
-  }
-
-  .exit-popup-form-row .btn {
-    width: 100%;
+    max-height: 95vh;
   }
 }
 
@@ -2953,6 +2903,18 @@ button[type="submit"] .btn-spinner + span {
   .nav-menu.is-open .nav-cta:hover {
     background: var(--gold-400);
     border-color: var(--gold-400);
+  }
+
+  /* Mobile menu - secondary CTA */
+  .nav-menu.is-open .nav-cta-secondary {
+    border-color: var(--white) !important;
+    color: var(--white) !important;
+    margin-top: var(--space-2);
+  }
+
+  .nav-menu.is-open .nav-cta-secondary:hover {
+    background: var(--white) !important;
+    color: var(--navy-800) !important;
   }
 
   /* Home hero - use grid to fix subtitle position independent of h1 height */

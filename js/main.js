@@ -634,48 +634,122 @@ function showFormError(form, message) {
 }
 
 // ----------------------------------------
-// Exit Intent Popup for Lead Capture
+// Exit Intent Popup — Second Opinion Assessment
 // ----------------------------------------
 function initExitIntentPopup() {
-  // Don't show on thank-you page or if already shown this session
-  if (window.location.pathname.includes('thank-you') ||
+  // Skip on pages where the quiz is already present or not needed
+  var path = window.location.pathname;
+  if (path.includes('thank-you') ||
+      path.includes('second-opinion') ||
+      path === '/' || path === '/index.html' || path === '' ||
       sessionStorage.getItem('exitPopupShown')) {
     return;
   }
 
-  let popupShown = false;
+  var popupShown = false;
 
-  // Create popup HTML
-  const popupHTML = `
-    <div class="exit-popup" id="exit-popup" role="dialog" aria-modal="true" aria-labelledby="exit-popup-title">
-      <div class="exit-popup-overlay"></div>
-      <div class="exit-popup-content">
-        <button class="exit-popup-close" aria-label="Close popup">&times;</button>
-        <div class="exit-popup-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"/>
-          </svg>
-        </div>
-        <h3 id="exit-popup-title">Before You Go...</h3>
-        <p>Schedule a no-pressure, free consultation with our team.</p>
+  // Build full quiz HTML for the popup
+  function q(id, num, text, sub, choices, prevQ, nextQ, nextFn) {
+    var header = '<div class="sof-q-header"><div class="sof-q-number">Question ' + num + ' of 8</div><div class="sof-q-text">' + text + '</div>' + (sub ? '<div class="sof-q-sub">' + sub + '</div>' : '') + '</div>';
+    var body = '<div class="sof-q-body">' + choices + '</div>';
+    var back = prevQ ? '<button class="sof-btn-back" onclick="sofGoBack(' + prevQ + ')">&larr; Back</button>' : '<div></div>';
+    var next = '<button class="sof-btn-next" id="q' + num + 'next"' + (nextFn ? '' : ' disabled') + ' onclick="' + (nextFn || 'sofGoNext(' + nextQ + ')') + '">Continue &rarr;</button>';
+    return '<div class="sof-question-screen" id="sofQ' + num + '">' + header + body + '<div class="sof-q-nav">' + back + next + '</div></div>';
+  }
 
-        <div class="exit-popup-calendar">
-          <div class="tidycal-embed" data-path="high-ridge-advisory/initial-consultation"></div>
-        </div>
-        <div class="exit-popup-actions">
-          <button class="btn btn-ghost exit-popup-dismiss">Maybe Later</button>
-        </div>
-      </div>
-    </div>
-  `;
+  function choice(qId, letter, label, sub, multi) {
+    var fn = multi ? 'sofToggleMulti' : 'sofSelectChoice';
+    var cls = multi ? ' sof-multi' : '';
+    return '<button class="sof-choice-btn' + cls + '" onclick="' + fn + '(\'' + qId + '\',\'' + letter + '\',this)"><div class="sof-choice-letter">' + letter + '</div><div><div class="sof-choice-label">' + label + '</div>' + (sub ? '<div class="sof-choice-sub">' + sub + '</div>' : '') + '</div></button>';
+  }
 
-  // Append popup to body
+  var quizHTML =
+    // Intro
+    '<div class="sof-intro-screen" id="sofIntroScreen">' +
+      '<div class="sof-eyebrow">Before You Go</div>' +
+      '<h2>Is Your Portfolio<br>Working as Hard<br>as <em>You Did?</em></h2>' +
+      '<p class="sof-intro-sub">Answer 8 questions in under 3 minutes. We\'ll identify the gaps in your current plan and whether a second opinion makes sense &mdash; at no cost and no obligation.</p>' +
+      '<div class="sof-intro-meta"><div class="sof-intro-meta-item"><div class="sof-dot"></div>3 minutes</div><div class="sof-intro-meta-item"><div class="sof-dot"></div>8 questions</div><div class="sof-intro-meta-item"><div class="sof-dot"></div>No obligation</div></div>' +
+      '<button class="sof-btn-start" onclick="sofStartQuiz()">Begin Assessment &rarr;</button>' +
+    '</div>' +
+
+    // Q1
+    q('sofQ1', 1, 'How much do you currently have invested or saved across all accounts?', 'Include retirement accounts, brokerage, savings &mdash; everything.',
+      '<div class="sof-choices" id="q1choices">' + choice('q1','A','Under $500,000') + choice('q1','B','$500,000 &ndash; $1 million') + choice('q1','C','$1 million &ndash; $3 million') + choice('q1','D','$3 million or more') + '</div>', 0, 2) +
+
+    // Q2
+    q('sofQ2', 2, 'Do you currently work with a financial advisor?', null,
+      '<div class="sof-choices">' + choice('q2','A','Yes &mdash; and I\'m satisfied with the relationship') + choice('q2','B','Yes &mdash; but I have questions or concerns','Not sure I\'m getting what I need') + choice('q2','C','No &mdash; I manage my own investments') + choice('q2','D','No &mdash; and I\'m looking for an advisor') + '</div>', 1, 3) +
+
+    // Q3
+    q('sofQ3', 3, 'When did you last have a comprehensive review of your full financial picture?', 'Investment strategy, tax efficiency, estate planning, insurance &mdash; all of it.',
+      '<div class="sof-choices">' + choice('q3','A','Within the last 12 months') + choice('q3','B','1 &ndash; 3 years ago') + choice('q3','C','More than 3 years ago') + choice('q3','D','I\'ve never had a comprehensive review') + '</div>', 2, 4) +
+
+    // Q4
+    q('sofQ4', 4, 'Which of these concerns you most about your current financial situation?', 'Select all that apply.',
+      '<div class="sof-multi-hint">Select all that apply &mdash; then click Continue.</div><div class="sof-choices" id="q4choices">' + choice('q4','A','Not knowing if my portfolio is properly allocated for my age and goals',null,true) + choice('q4','B','Paying too much in taxes on my investments or income',null,true) + choice('q4','C','Whether I\'ll have enough to retire comfortably',null,true) + choice('q4','D','Protecting my assets and estate for my family',null,true) + choice('q4','E','High fees or not understanding what I\'m paying my advisor',null,true) + choice('q4','F','My business finances and personal wealth aren\'t coordinated',null,true) + '</div>', 3, 5, 'sofGoNext(5)') +
+
+    // Q5
+    q('sofQ5', 5, 'How would you describe your investment risk tolerance?', null,
+      '<div class="sof-choices">' + choice('q5','A','Conservative &mdash; protecting what I have comes first') + choice('q5','B','Moderate &mdash; balanced growth with some protection') + choice('q5','C','Growth-oriented &mdash; comfortable with market fluctuations') + choice('q5','D','I\'m not sure &mdash; it\'s never been formally assessed') + '</div>', 4, 6) +
+
+    // Q6
+    q('sofQ6', 6, 'Are you or your spouse a business owner, or have you recently experienced a significant financial event?', 'Business sale, inheritance, equity compensation, retirement, divorce, or other liquidity event.',
+      '<div class="sof-choices">' + choice('q6','A','Yes &mdash; I own or recently sold a business') + choice('q6','B','Yes &mdash; I\'ve experienced a significant liquidity event recently') + choice('q6','C','No &mdash; but I anticipate one within the next 1&ndash;3 years') + choice('q6','D','No significant events') + '</div>', 5, 7) +
+
+    // Q7
+    q('sofQ7', 7, 'How many years until you plan to retire &mdash; or, if retired, how long ago did you retire?', null,
+      '<div class="sof-choices">' + choice('q7','A','Already retired') + choice('q7','B','Within the next 5 years') + choice('q7','C','5 &ndash; 15 years away') + choice('q7','D','More than 15 years away') + '</div>', 6, 8) +
+
+    // Q8
+    '<div class="sof-question-screen" id="sofQ8"><div class="sof-q-header"><div class="sof-q-number">Question 8 of 8</div><div class="sof-q-text">What matters most to you in a financial advisor relationship?</div></div><div class="sof-q-body"><div class="sof-choices">' +
+      choice('q8','A','Independence &mdash; no conflicts of interest or product quotas') + choice('q8','B','Clear, simple communication &mdash; I want to understand my plan') + choice('q8','C','Performance and strategy &mdash; getting the best returns for my risk') + choice('q8','D','A comprehensive partner &mdash; someone who coordinates everything') +
+    '</div></div><div class="sof-q-nav"><button class="sof-btn-back" onclick="sofGoBack(7)">&larr; Back</button><button class="sof-btn-next" id="q8next" disabled onclick="sofGoContact()">See My Results &rarr;</button></div></div>' +
+
+    // Contact form
+    '<div class="sof-contact-screen" id="sofContactScreen"><div class="sof-contact-header"><div class="sof-q-number">Almost there</div><div class="sof-q-text">Where should we send your personalized assessment?</div><div class="sof-q-sub">Your results are ready. Enter your contact info and James will personally review your answers before reaching out.</div></div>' +
+    '<div class="sof-contact-body"><p class="sof-form-note">No spam, ever. Your information is used only to send your assessment results and, if you choose, to schedule a complimentary consultation.</p>' +
+    '<div class="form-honeypot" aria-hidden="true"><input type="text" id="sofHpWebsite" name="website_url" tabindex="-1" autocomplete="off"></div><div class="form-honeypot" aria-hidden="true"><input type="email" id="sofHpEmail" name="email_confirm" tabindex="-1" autocomplete="off"></div>' +
+    '<div class="sof-form-row"><div class="sof-form-col"><label class="sof-form-label" for="sofFirstName">First Name</label><input class="sof-text-input" type="text" id="sofFirstName" placeholder="James" autocomplete="given-name"></div><div class="sof-form-col"><label class="sof-form-label" for="sofLastName">Last Name</label><input class="sof-text-input" type="text" id="sofLastName" placeholder="Madden" autocomplete="family-name"></div></div>' +
+    '<div class="sof-form-row"><div class="sof-form-col"><label class="sof-form-label" for="sofEmail">Email Address</label><input class="sof-text-input" type="email" id="sofEmail" placeholder="you@company.com" autocomplete="email"></div><div class="sof-form-col"><label class="sof-form-label" for="sofPhone">Phone (optional)</label><input class="sof-text-input" type="tel" id="sofPhone" placeholder="(972) 555-0100" autocomplete="tel"></div></div>' +
+    '<div class="sof-form-row" style="margin-bottom:0"><div class="sof-form-col"><label class="sof-form-label" for="sofCity">City / Area</label><input class="sof-text-input" type="text" id="sofCity" placeholder="McKinney, TX"></div><div class="sof-form-col"><label class="sof-form-label" for="sofBestTime">Best Time to Reach You</label><select class="sof-text-input" id="sofBestTime"><option value="">No preference</option><option>Morning (8am-12pm)</option><option>Afternoon (12pm-4pm)</option><option>Evening (4pm-7pm)</option></select></div></div>' +
+    '<div style="margin-top:20px"><div class="sof-consent-wrap"><input type="checkbox" id="sofConsent" checked><label class="sof-consent-text" for="sofConsent">I consent to being contacted by High Ridge Advisory regarding my assessment results and to learn about advisory services. I understand I can opt out at any time.</label></div></div></div>' +
+    '<div class="sof-q-nav"><button class="sof-btn-back" onclick="sofGoBack(8)">&larr; Back</button><button class="sof-btn-next" onclick="sofSubmitForm()">View My Results &rarr;</button></div></div>' +
+
+    // Results
+    '<div class="sof-result-screen" id="sofResultScreen"><div class="sof-result-header"><div class="sof-result-icon">&#10003;</div><h2 id="sofResultHeadline">Your Assessment is Complete</h2><p id="sofResultSubhead">Based on your answers, here\'s what we found.</p></div>' +
+    '<div class="sof-result-body"><div class="sof-score-summary" id="sofScoreSummary"></div><div class="sof-findings-title">Key Observations</div><div id="sofFindingsList"></div>' +
+    '<div class="sof-result-cta"><p id="sofCtaText">James Madden will personally review your responses and reach out within one business day. In the meantime, you\'re welcome to schedule your complimentary Second Opinion consultation directly.</p>' +
+    '<a class="sof-btn-schedule" href="#" data-booking>Schedule a Free Consultation &rarr;</a></div></div></div>';
+
+  var popupHTML =
+    '<div class="exit-popup" id="exit-popup" role="dialog" aria-modal="true">' +
+      '<div class="exit-popup-overlay"></div>' +
+      '<div class="exit-popup-content">' +
+        '<button class="exit-popup-close" aria-label="Close popup">&times;</button>' +
+        '<div class="sof-progress-wrap" style="padding: 16px 24px 0;"><div class="sof-progress-track"><div class="sof-progress-fill" id="sofProgressFill"></div></div><div class="sof-progress-label" id="sofProgressLabel">Getting started</div></div>' +
+        '<div class="sof-quiz-card" id="sofQuizCard" style="box-shadow:none;border:none;max-width:none;">' + quizHTML + '</div>' +
+      '</div>' +
+    '</div>';
+
   document.body.insertAdjacentHTML('beforeend', popupHTML);
 
-  const popup = document.getElementById('exit-popup');
-  const closeBtn = popup.querySelector('.exit-popup-close');
-  const dismissBtn = popup.querySelector('.exit-popup-dismiss');
-  const overlay = popup.querySelector('.exit-popup-overlay');
+  // Dynamically load quiz CSS and JS
+  if (!document.querySelector('link[href*="second-opinion.css"]')) {
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'css/second-opinion.css';
+    document.head.appendChild(css);
+  }
+  if (!document.querySelector('script[src*="second-opinion.js"]')) {
+    var js = document.createElement('script');
+    js.src = 'js/second-opinion.js';
+    document.body.appendChild(js);
+  }
+
+  var popup = document.getElementById('exit-popup');
+  var closeBtn = popup.querySelector('.exit-popup-close');
+  var overlay = popup.querySelector('.exit-popup-overlay');
 
   function showPopup() {
     if (popupShown) return;
@@ -683,14 +757,6 @@ function initExitIntentPopup() {
     sessionStorage.setItem('exitPopupShown', 'true');
     popup.classList.add('is-visible');
     document.body.style.overflow = 'hidden';
-
-    // Load TidyCal embed.js if not already on the page
-    if (!document.querySelector('script[src*="tidycal"]')) {
-      var s = document.createElement('script');
-      s.src = 'https://asset-tidycal.b-cdn.net/js/embed.js';
-      s.async = true;
-      document.body.appendChild(s);
-    }
   }
 
   function hidePopup() {
@@ -707,7 +773,6 @@ function initExitIntentPopup() {
 
   // Close handlers
   closeBtn.addEventListener('click', hidePopup);
-  dismissBtn.addEventListener('click', hidePopup);
   overlay.addEventListener('click', hidePopup);
 
   // Close on escape

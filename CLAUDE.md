@@ -19,7 +19,7 @@ bash capture-pages.sh
 
 ### What It Does
 
-- Captures all 8 website pages from the **Netlify preview site** (`hra-website.netlify.app`) as full-page PNG screenshots
+- Captures all 9 website pages from the **Netlify preview site** (`hra-website.netlify.app`) as full-page PNG screenshots
 - Uses the preview URL (not live production) so compliance can pre-approve changes before they go live
 - Saves to `./compliance-pdfs/` with date-stamped filenames: `HighRidge_<Page>_YYYY-MM-DD.png`
 - The `compliance-pdfs/` folder is gitignored (screenshots are for offline delivery, not version control)
@@ -34,6 +34,7 @@ bash capture-pages.sh
 | Contact | `/contact.html` |
 | Disclosures | `/disclosures.html` |
 | Client Portal | `/client-portal.html` |
+| Second Opinion | `/second-opinion.html` |
 | Thank You | `/thank-you.html` |
 | 404 | `/404.html` |
 

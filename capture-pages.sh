@@ -23,6 +23,7 @@ PAGES=(
   ["Contact"]="/contact.html"
   ["Disclosures"]="/disclosures.html"
   ["Client-Portal"]="/client-portal.html"
+  ["Second-Opinion"]="/second-opinion.html"
   ["Thank-You"]="/thank-you.html"
   ["404"]="/404.html"
 )
@@ -32,7 +33,7 @@ echo "Source: $SITE_URL (Netlify preview)"
 echo "Date: $TODAY"
 echo ""
 
-for name in Home About Services Contact Disclosures Client-Portal Thank-You 404; do
+for name in Home About Services Contact Disclosures Client-Portal Second-Opinion Thank-You 404; do
   page_path="${PAGES[$name]}"
   url="${SITE_URL}${page_path}"
   filename="HighRidge_${name}_${TODAY}.png"

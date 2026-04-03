@@ -103,11 +103,19 @@
 
   function timeOk() { return Date.now() - t0 >= MIN_TIME_MS; }
 
-  function loadIframe() {
-    if (iframeReady) return;
+  function loadIframe(prefill) {
+    // Allow reloading with new prefill data
+    if (iframeReady && !prefill) return;
     body.innerHTML = '';
     var f = document.createElement('iframe');
-    f.src   = TIDYCAL_URL;
+    var url = TIDYCAL_URL;
+    if (prefill) {
+      var params = [];
+      if (prefill.name) params.push('name=' + encodeURIComponent(prefill.name));
+      if (prefill.email) params.push('email=' + encodeURIComponent(prefill.email));
+      if (params.length) url += '?' + params.join('&');
+    }
+    f.src   = url;
     f.title = 'Schedule a Discovery Meeting with High Ridge Advisory';
     f.setAttribute('loading', 'lazy');
     body.appendChild(f);
@@ -126,17 +134,25 @@
     ov.classList.add('bm-open');
     document.body.style.overflow = 'hidden';
 
+    // Check for quiz prefill data (set by second-opinion.js after form submit)
+    var prefill = null;
+    if (window.sofBookingPrefill) {
+      prefill = window.sofBookingPrefill;
+      iframeReady = false; // Force reload with prefill
+    }
+
     if (!timeOk()) {
       body.innerHTML = '<div class="bm-wait">Loading scheduler&hellip;</div>';
       var wait = MIN_TIME_MS - (now - t0);
+      var pf = prefill;
       setTimeout(function () {
         if (isBot()) { close(); return; }
-        loadIframe();
+        loadIframe(pf);
       }, wait);
       return;
     }
 
-    loadIframe();
+    loadIframe(prefill);
   }
 
   function close() {

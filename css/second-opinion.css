@@ -1,0 +1,611 @@
+/* =========================================
+   Second Opinion Assessment — Quiz Styles
+   ========================================= */
+
+/* Local variables for the quiz tool */
+.sof-section {
+  --sof-navy: var(--navy-800);
+  --sof-gold: var(--gold-500);
+  --sof-gold-hover: var(--gold-400);
+  --sof-cream: #FAFAF7;
+  --sof-lgray: var(--gray-200);
+  --sof-gray: var(--gray-500);
+  --sof-text: var(--gray-700);
+  --sof-heading: var(--gray-900);
+}
+
+/* Page header */
+.sof-page-header {
+  padding-top: calc(var(--nav-height) + var(--space-16));
+  padding-bottom: var(--space-8);
+}
+
+@media (max-width: 768px) {
+  .sof-page-header {
+    padding-top: calc(var(--nav-height-mobile) + var(--space-12));
+  }
+}
+
+/* Quiz section background */
+.sof-section {
+  background: var(--sof-cream);
+  padding-top: 0;
+  padding-bottom: var(--space-16);
+}
+
+/* ── PROGRESS BAR ── */
+.sof-progress-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-6) 0 var(--space-4);
+}
+
+.sof-progress-track {
+  height: 3px;
+  background: var(--sof-lgray);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sof-progress-fill {
+  height: 100%;
+  background: var(--sof-gold);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+.sof-progress-label {
+  font-size: 11px;
+  color: var(--sof-gray);
+  margin-top: 6px;
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+/* ── QUIZ CARD ── */
+.sof-quiz-card {
+  scroll-margin-top: calc(var(--nav-height) + var(--space-4));
+  background: var(--white);
+  border: 1px solid var(--sof-lgray);
+  border-radius: 4px;
+  box-shadow: 0 4px 32px rgba(26, 54, 93, 0.08);
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  animation: sofFadeUp 0.4s ease;
+}
+
+@keyframes sofFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sof-slide-in {
+  animation: sofSlideIn 0.3s ease;
+}
+
+@keyframes sofSlideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── INTRO SCREEN ── */
+.sof-intro-screen {
+  padding: 56px 56px 48px;
+  text-align: center;
+}
+
+.sof-intro-screen .sof-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sof-gold);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.sof-intro-screen h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--sof-navy);
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.sof-intro-screen h2 em {
+  font-style: italic;
+  color: var(--sof-gold);
+}
+
+.sof-intro-sub {
+  font-size: 15px;
+  color: var(--sof-gray);
+  line-height: 1.75;
+  max-width: 480px;
+  margin: 0 auto 32px;
+}
+
+.sof-intro-meta {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.sof-intro-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sof-gray);
+}
+
+.sof-intro-meta-item .sof-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sof-gold);
+  flex-shrink: 0;
+}
+
+.sof-btn-start {
+  background: var(--sof-navy);
+  color: var(--white);
+  border: none;
+  padding: 15px 48px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.sof-btn-start:hover {
+  background: #152647;
+  transform: translateY(-1px);
+}
+
+/* ── QUESTION SCREEN ── */
+.sof-question-screen {
+  display: none;
+}
+
+.sof-question-screen.sof-active {
+  display: block;
+}
+
+.sof-q-header {
+  background: var(--sof-navy);
+  padding: 28px 40px 24px;
+}
+
+.sof-q-number {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 10px;
+}
+
+.sof-q-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.sof-q-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.sof-q-body {
+  padding: 32px 40px 36px;
+}
+
+/* ── CHOICE OPTIONS ── */
+.sof-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sof-choice-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--sof-cream);
+  border: 1.5px solid var(--sof-lgray);
+  border-radius: 3px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.sof-choice-btn:hover {
+  border-color: var(--sof-navy);
+  background: #F0F4F9;
+}
+
+.sof-choice-btn.sof-selected {
+  border-color: var(--sof-navy);
+  background: #EEF2F8;
+}
+
+.sof-choice-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--sof-lgray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sof-gray);
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+
+.sof-choice-btn.sof-selected .sof-choice-letter {
+  background: var(--sof-navy);
+  border-color: var(--sof-navy);
+  color: var(--white);
+}
+
+.sof-choice-label {
+  font-size: 14px;
+  color: var(--sof-text);
+  line-height: 1.5;
+  padding-top: 2px;
+}
+
+.sof-choice-sub {
+  font-size: 12px;
+  color: var(--sof-gray);
+  margin-top: 3px;
+}
+
+/* ── MULTI-SELECT ── */
+.sof-multi-hint {
+  font-size: 12px;
+  color: var(--sof-gray);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+/* ── NAVIGATION ── */
+.sof-q-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 28px;
+  border-top: 1px solid var(--sof-lgray);
+  padding-top: 20px;
+}
+
+.sof-btn-back {
+  background: none;
+  border: 1.5px solid var(--sof-lgray);
+  color: var(--sof-gray);
+  padding: 11px 24px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.sof-btn-back:hover {
+  border-color: var(--sof-navy);
+  color: var(--sof-navy);
+}
+
+.sof-btn-next {
+  background: var(--sof-gold);
+  color: var(--sof-navy);
+  border: none;
+  padding: 12px 36px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.sof-btn-next:hover {
+  background: var(--sof-gold-hover);
+  transform: translateY(-1px);
+}
+
+.sof-btn-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── CONTACT FORM ── */
+.sof-contact-screen {
+  display: none;
+}
+
+.sof-contact-screen.sof-active {
+  display: block;
+}
+
+.sof-contact-header {
+  background: var(--sof-navy);
+  padding: 28px 40px 24px;
+}
+
+.sof-contact-body {
+  padding: 32px 40px 36px;
+}
+
+.sof-form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.sof-form-col {
+  flex: 1;
+}
+
+.sof-form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sof-gray);
+  margin-bottom: 6px;
+}
+
+.sof-form-note {
+  font-size: 12px;
+  color: var(--sof-gray);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.sof-text-input {
+  width: 100%;
+  border: 1.5px solid var(--sof-lgray);
+  border-radius: 3px;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--sof-text);
+  background: var(--sof-cream);
+  outline: none;
+  transition: border-color 0.18s;
+}
+
+.sof-text-input:focus {
+  border-color: var(--sof-navy);
+  background: var(--white);
+}
+
+.sof-consent-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 4px;
+}
+
+.sof-consent-wrap input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--sof-navy);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.sof-consent-text {
+  font-size: 12px;
+  color: var(--sof-gray);
+  line-height: 1.6;
+}
+
+/* ── RESULT SCREEN ── */
+.sof-result-screen {
+  display: none;
+}
+
+.sof-result-screen.sof-active {
+  display: block;
+}
+
+.sof-result-header {
+  background: var(--sof-navy);
+  padding: 36px 40px 32px;
+  text-align: center;
+}
+
+.sof-result-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--sof-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 24px;
+}
+
+.sof-result-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.sof-result-header p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sof-result-body {
+  padding: 36px 40px;
+}
+
+.sof-score-summary {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.sof-score-card {
+  flex: 1;
+  min-width: 140px;
+  background: var(--sof-cream);
+  border: 1px solid var(--sof-lgray);
+  border-radius: 3px;
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.sof-score-card .sof-sc-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--sof-navy);
+  line-height: 1;
+}
+
+.sof-score-card .sof-sc-label {
+  font-size: 11px;
+  color: var(--sof-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+
+.sof-findings-title {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sof-gold);
+  margin-bottom: 14px;
+}
+
+.sof-finding-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.sof-finding-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sof-gold);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.sof-finding-text {
+  font-size: 14px;
+  color: var(--sof-text);
+  line-height: 1.6;
+}
+
+.sof-result-cta {
+  background: #EEF2F8;
+  border: 1px solid var(--sof-lgray);
+  border-left: 4px solid var(--sof-gold);
+  padding: 22px 24px;
+  margin-top: 24px;
+  border-radius: 2px;
+}
+
+.sof-result-cta {
+  text-align: center;
+}
+
+.sof-result-cta p {
+  font-size: 14px;
+  color: var(--sof-text);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.sof-btn-schedule {
+  display: inline-block;
+  background: var(--sof-navy);
+  color: var(--white);
+  padding: 13px 32px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.18s;
+  border: none;
+  cursor: pointer;
+}
+
+.sof-btn-schedule:hover {
+  background: #152647;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .sof-intro-screen {
+    padding: 36px 24px 32px;
+  }
+
+  .sof-intro-screen h2 {
+    font-size: 32px;
+  }
+
+  .sof-q-header,
+  .sof-q-body,
+  .sof-q-nav {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .sof-contact-body {
+    padding: 24px;
+  }
+
+  .sof-result-body {
+    padding: 24px;
+  }
+
+  .sof-form-row {
+    flex-direction: column;
+  }
+
+  .sof-result-header {
+    padding: 28px 24px 24px;
+  }
+
+  .sof-result-header h2 {
+    font-size: 24px;
+  }
+}
