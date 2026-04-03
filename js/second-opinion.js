@@ -7,6 +7,18 @@
   var answers = {};
   var multiAnswers = { q4: new Set() };
 
+  // ── ANSWER LABEL MAPS (for human-readable form submissions) ──
+  var answerLabels = {
+    q1: { A: 'Under $500,000', B: '$500,000 – $1 million', C: '$1 million – $3 million', D: '$3 million or more' },
+    q2: { A: 'Yes — satisfied with my advisor', B: 'Yes — but I have questions or concerns', C: 'No — I manage my own investments', D: 'No — looking for an advisor' },
+    q3: { A: 'Within the last 12 months', B: '1–3 years ago', C: 'More than 3 years ago', D: 'Never had a comprehensive review' },
+    q4: { A: 'Portfolio allocation concerns', B: 'Paying too much in taxes', C: 'Enough to retire comfortably', D: 'Protecting assets/estate for family', E: 'High fees or unclear advisor costs', F: 'Business & personal finances not coordinated' },
+    q5: { A: 'Conservative — protecting what I have', B: 'Moderate — balanced growth with protection', C: 'Growth-oriented — comfortable with fluctuations', D: 'Not sure — never formally assessed' },
+    q6: { A: 'Own or recently sold a business', B: 'Recent significant liquidity event', C: 'Anticipate a liquidity event in 1–3 years', D: 'No significant events' },
+    q7: { A: 'Already retired', B: 'Within the next 5 years', C: '5–15 years away', D: 'More than 15 years away' },
+    q8: { A: 'Independence — no conflicts of interest', B: 'Clear, simple communication', C: 'Performance and strategy', D: 'Comprehensive partner — coordinates everything' }
+  };
+
   // ── GA4 TRACKING ───────────────────────────────────────────
   function sofTrack(eventName, params) {
     if (typeof gtag === 'function') {
@@ -210,20 +222,57 @@
     formData.append('best-time', document.getElementById('sofBestTime').value);
     formData.append('consent', document.getElementById('sofConsent').checked ? 'yes' : 'no');
 
-    // Quiz answers
+    // Quiz answers — submit full answer text instead of letter codes
+    var fieldNames = {
+      q1: 'Q1 Portfolio Size',
+      q2: 'Q2 Current Advisor',
+      q3: 'Q3 Last Financial Review',
+      q4: 'Q4 Top Concerns',
+      q5: 'Q5 Risk Tolerance',
+      q6: 'Q6 Business or Liquidity Event',
+      q7: 'Q7 Retirement Timeline',
+      q8: 'Q8 Advisor Priorities'
+    };
     for (var i = 1; i <= 8; i++) {
       var key = 'q' + i;
       var val = answers[key];
-      formData.append('quiz-q' + i, Array.isArray(val) ? val.join(', ') : (val || ''));
+      var label;
+      if (Array.isArray(val)) {
+        label = val.map(function (v) { return answerLabels[key][v] || v; }).join('; ');
+      } else {
+        label = (val && answerLabels[key][val]) || val || '';
+      }
+      formData.append(fieldNames[key], label);
     }
-    formData.append('quiz-gaps', gaps);
-    formData.append('quiz-result-level', resultLevel);
 
-    // Include UTM params if present
+    // Quiz result — human-readable explanation
+    var resultText;
+    if (resultLevel === 'strongly-recommended') {
+      resultText = 'Strongly Recommended — multiple significant planning gaps detected';
+    } else if (resultLevel === 'meaningful-gaps') {
+      resultText = 'Meaningful Gaps — a few specific areas worth reviewing';
+    } else {
+      resultText = 'Solid Foundation — generally well-managed situation';
+    }
+    formData.append('Quiz Result', resultText);
+
+    // Planning gaps — score with inline scale explanation
+    formData.append('Planning Gaps Found', gaps + ' gap' + (gaps !== 1 ? 's' : '') + ' identified (scale: 0-2 solid, 3-4 meaningful gaps, 5+ strongly recommended)');
+
+    // UTM traffic source params — renamed for readability
+    // UTM = Urchin Tracking Module, standard tags added to URLs to track
+    // which marketing campaigns, ads, or links drove a visitor to the site
     if (window.sofUtmParams) {
-      for (var key in window.sofUtmParams) {
-        if (window.sofUtmParams.hasOwnProperty(key)) {
-          formData.append(key, window.sofUtmParams[key]);
+      var utmFieldNames = {
+        utm_source: 'Traffic Source',
+        utm_medium: 'Traffic Medium',
+        utm_campaign: 'Campaign Name',
+        utm_term: 'Search Keyword',
+        utm_content: 'Ad Variant'
+      };
+      for (var utmKey in window.sofUtmParams) {
+        if (window.sofUtmParams.hasOwnProperty(utmKey)) {
+          formData.append(utmFieldNames[utmKey] || utmKey, window.sofUtmParams[utmKey]);
         }
       }
     }
