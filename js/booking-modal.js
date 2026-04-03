@@ -33,7 +33,7 @@
   // --------------- styles ---------------
   var css = document.createElement('style');
   css.textContent =
-    '.bm-ov{display:none;position:fixed;inset:0;background:rgba(15,39,68,.75);z-index:10000;' +
+    '.bm-ov{display:none;position:fixed;inset:0;background:rgba(15,39,68,.75);z-index:10001;' +
       'justify-content:center;align-items:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}' +
     '.bm-ov.bm-open{display:flex}' +
     '.bm-dl{background:#fff;border-radius:12px;width:90%;max-width:620px;height:85vh;max-height:720px;' +
@@ -130,6 +130,12 @@
     var now = Date.now();
     opens.push(now);
     lastOpen = now;
+
+    // Close exit popup if it's open, so booking modal takes over smoothly
+    var exitPopup = document.getElementById('exit-popup');
+    if (exitPopup && exitPopup.classList.contains('is-visible')) {
+      exitPopup.classList.remove('is-visible');
+    }
 
     ov.classList.add('bm-open');
     document.body.style.overflow = 'hidden';
