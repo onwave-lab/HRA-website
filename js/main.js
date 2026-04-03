@@ -637,14 +637,15 @@ function showFormError(form, message) {
 // Exit Intent Popup — Second Opinion Assessment
 // ----------------------------------------
 function initExitIntentPopup() {
-  // Skip on pages where the quiz is already present or not needed
+  // Skip on pages where the quiz is already present as a standalone page or not needed
   var path = window.location.pathname;
   if (path.includes('thank-you') ||
       path.includes('second-opinion') ||
-      path === '/' || path === '/index.html' || path === '' ||
       sessionStorage.getItem('exitPopupShown')) {
     return;
   }
+
+  var isHomepage = (path === '/' || path === '/index.html' || path === '');
 
   var popupShown = false;
 
@@ -722,29 +723,52 @@ function initExitIntentPopup() {
     '<div class="sof-result-cta"><p id="sofCtaText">James Madden will personally review your responses and reach out within one business day. In the meantime, you\'re welcome to schedule your complimentary Second Opinion consultation directly.</p>' +
     '<a class="sof-btn-schedule" href="#" data-booking>Schedule a Free Consultation &rarr;</a></div></div></div>';
 
-  var popupHTML =
-    '<div class="exit-popup" id="exit-popup" role="dialog" aria-modal="true">' +
-      '<div class="exit-popup-overlay"></div>' +
-      '<div class="exit-popup-content">' +
-        '<button class="exit-popup-close" aria-label="Close popup">&times;</button>' +
-        '<div class="sof-progress-wrap" style="padding: 16px 24px 0;"><div class="sof-progress-track"><div class="sof-progress-fill" id="sofProgressFill"></div></div><div class="sof-progress-label" id="sofProgressLabel">Getting started</div></div>' +
-        '<div class="sof-quiz-card" id="sofQuizCard" style="box-shadow:none;border:none;max-width:none;">' + quizHTML + '</div>' +
-      '</div>' +
-    '</div>';
+  if (isHomepage) {
+    // Homepage: popup scrolls to the existing embedded quiz
+    var homepagePopupHTML =
+      '<div class="exit-popup" id="exit-popup" role="dialog" aria-modal="true">' +
+        '<div class="exit-popup-overlay"></div>' +
+        '<div class="exit-popup-content" style="max-width:480px;text-align:center;overflow:hidden;">' +
+          '<button class="exit-popup-close" aria-label="Close popup">&times;</button>' +
+          '<div style="background:var(--navy-800,#1a365d);padding:40px 32px 32px;">' +
+            '<div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#d4a853;margin-bottom:16px;font-weight:500;">Before You Go</div>' +
+            '<h3 style="font-family:Cormorant Garamond,serif;font-size:clamp(1.75rem,4vw,2.25rem);font-weight:600;color:#fff;line-height:1.15;margin:0;">Is Your Portfolio<br>Working as Hard<br>as <em style="font-style:italic;color:#d4a853;">You Did?</em></h3>' +
+          '</div>' +
+          '<div style="padding:32px;">' +
+            '<p style="font-size:15px;color:#64748b;line-height:1.7;margin-bottom:24px;">Take our complimentary 8-question assessment below and discover whether a second opinion on your financial plan makes sense.</p>' +
+            '<button id="exit-popup-scroll-btn" style="display:block;width:100%;background:#1a365d;color:#fff;padding:15px 32px;font-size:14px;font-weight:500;font-family:Inter,sans-serif;letter-spacing:0.06em;border:none;border-radius:2px;cursor:pointer;transition:all 0.2s;margin-bottom:12px;">Take Me to the Assessment &darr;</button>' +
+            '<button class="exit-popup-dismiss-home" style="background:none;border:none;font-size:13px;color:#94a3b8;cursor:pointer;padding:8px;font-family:Inter,sans-serif;">Maybe Later</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
 
-  document.body.insertAdjacentHTML('beforeend', popupHTML);
+    document.body.insertAdjacentHTML('beforeend', homepagePopupHTML);
+  } else {
+    // All other pages: embed the full quiz in the popup
+    var popupHTML =
+      '<div class="exit-popup" id="exit-popup" role="dialog" aria-modal="true">' +
+        '<div class="exit-popup-overlay"></div>' +
+        '<div class="exit-popup-content">' +
+          '<button class="exit-popup-close" aria-label="Close popup">&times;</button>' +
+          '<div class="sof-progress-wrap" style="padding: 16px 24px 0;"><div class="sof-progress-track"><div class="sof-progress-fill" id="sofProgressFill"></div></div><div class="sof-progress-label" id="sofProgressLabel">Getting started</div></div>' +
+          '<div class="sof-quiz-card" id="sofQuizCard" style="box-shadow:none;border:none;max-width:none;">' + quizHTML + '</div>' +
+        '</div>' +
+      '</div>';
 
-  // Dynamically load quiz CSS and JS
-  if (!document.querySelector('link[href*="second-opinion.css"]')) {
-    var css = document.createElement('link');
-    css.rel = 'stylesheet';
-    css.href = 'css/second-opinion.css';
-    document.head.appendChild(css);
-  }
-  if (!document.querySelector('script[src*="second-opinion.js"]')) {
-    var js = document.createElement('script');
-    js.src = 'js/second-opinion.js';
-    document.body.appendChild(js);
+    document.body.insertAdjacentHTML('beforeend', popupHTML);
+
+    // Dynamically load quiz CSS and JS
+    if (!document.querySelector('link[href*="second-opinion.css"]')) {
+      var css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'css/second-opinion.css';
+      document.head.appendChild(css);
+    }
+    if (!document.querySelector('script[src*="second-opinion.js"]')) {
+      var js = document.createElement('script');
+      js.src = 'js/second-opinion.js';
+      document.body.appendChild(js);
+    }
   }
 
   var popup = document.getElementById('exit-popup');
@@ -762,6 +786,20 @@ function initExitIntentPopup() {
   function hidePopup() {
     popup.classList.remove('is-visible');
     document.body.style.overflow = '';
+  }
+
+  // Homepage: scroll-to-quiz button
+  var scrollBtn = document.getElementById('exit-popup-scroll-btn');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', function() {
+      hidePopup();
+      var quizSection = document.getElementById('second-opinion');
+      if (quizSection) quizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+  var dismissHome = popup.querySelector('.exit-popup-dismiss-home');
+  if (dismissHome) {
+    dismissHome.addEventListener('click', function() { hidePopup(); });
   }
 
   // Detect exit intent (mouse leaving viewport at top)
