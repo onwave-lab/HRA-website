@@ -268,11 +268,6 @@
     // Submit to Netlify in the background
     submitToNetlify(result.gaps, resultLevel);
 
-    // Set prefill data for TidyCal booking modal
-    var last = document.getElementById('sofLastName').value.trim();
-    var fullName = last ? first + ' ' + last : first;
-    window.sofBookingPrefill = { name: fullName, email: email };
-
     // Show results immediately
     showResult(first, result);
     setProgress(10);
