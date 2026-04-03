@@ -7,6 +7,53 @@
   var answers = {};
   var multiAnswers = { q4: new Set() };
 
+  // ── GA4 TRACKING ───────────────────────────────────────────
+  function sofTrack(eventName, params) {
+    if (typeof gtag === 'function') {
+      params = params || {};
+      params.quiz_surface = sofGetSurface();
+      // Attach UTM params if captured
+      if (window.sofUtmParams) {
+        for (var k in window.sofUtmParams) {
+          if (window.sofUtmParams.hasOwnProperty(k)) params[k] = window.sofUtmParams[k];
+        }
+      }
+      gtag('event', eventName, params);
+    }
+  }
+
+  function sofGetSurface() {
+    // Determine which surface the quiz is running on
+    var popup = document.getElementById('exit-popup');
+    if (popup && popup.classList.contains('is-visible')) return 'exit_popup';
+    if (window.location.pathname.includes('second-opinion')) return 'standalone_page';
+    return 'homepage_embed';
+  }
+
+  // ── UTM PARAMETER CAPTURE ─────────────────────────────────
+  // Captures UTM params from the URL so they can be attached to form submissions and GA4 events
+  (function captureUtm() {
+    var params = new URLSearchParams(window.location.search);
+    var utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    var captured = {};
+    var hasUtm = false;
+    utmKeys.forEach(function (key) {
+      var val = params.get(key);
+      if (val) { captured[key] = val; hasUtm = true; }
+    });
+    if (hasUtm) {
+      window.sofUtmParams = captured;
+      // Store in sessionStorage so UTMs persist across page navigation
+      try { sessionStorage.setItem('sofUtmParams', JSON.stringify(captured)); } catch (e) {}
+    } else {
+      // Restore from sessionStorage if arriving from an earlier UTM-tagged page
+      try {
+        var stored = sessionStorage.getItem('sofUtmParams');
+        if (stored) window.sofUtmParams = JSON.parse(stored);
+      } catch (e) {}
+    }
+  })();
+
   // ── BOT PREVENTION ─────────────────────────────────────────
   var sofT0 = Date.now();
   var sofInteracted = false;
@@ -63,9 +110,18 @@
   function startQuiz() {
     showScreen('sofQ1');
     setProgress(1);
+    sofTrack('sof_quiz_start');
   }
 
   function goNext(nextQ) {
+    // Track the question they just answered (nextQ - 1)
+    var prevQ = nextQ - 1;
+    var prevKey = 'q' + prevQ;
+    var answer = answers[prevKey];
+    sofTrack('sof_question_answered', {
+      question_number: prevQ,
+      answer: Array.isArray(answer) ? answer.join(', ') : (answer || '')
+    });
     showScreen('sofQ' + nextQ);
     setProgress(nextQ);
   }
@@ -76,6 +132,12 @@
   }
 
   function goContact() {
+    // Track Q8 answer
+    sofTrack('sof_question_answered', {
+      question_number: 8,
+      answer: answers.q8 || ''
+    });
+    sofTrack('sof_contact_form_viewed');
     showScreen('sofContactScreen');
     setProgress(9);
   }
@@ -157,6 +219,15 @@
     formData.append('quiz-gaps', gaps);
     formData.append('quiz-result-level', resultLevel);
 
+    // Include UTM params if present
+    if (window.sofUtmParams) {
+      for (var key in window.sofUtmParams) {
+        if (window.sofUtmParams.hasOwnProperty(key)) {
+          formData.append(key, window.sofUtmParams[key]);
+        }
+      }
+    }
+
     // Submit in background — don't block the results screen
     fetch('/', {
       method: 'POST',
@@ -183,6 +254,16 @@
     // Calculate results
     var result = calculateGaps();
     var resultLevel = result.gaps >= 5 ? 'strongly-recommended' : (result.gaps >= 3 ? 'meaningful-gaps' : 'solid');
+    var consented = document.getElementById('sofConsent').checked;
+
+    // Track form submission
+    sofTrack('sof_form_submitted', {
+      consent_given: consented ? 'yes' : 'no',
+      gaps_identified: result.gaps,
+      result_level: resultLevel,
+      portfolio_range: answers.q1 || '',
+      retirement_timeline: answers.q7 || ''
+    });
 
     // Submit to Netlify in the background
     submitToNetlify(result.gaps, resultLevel);
@@ -197,9 +278,25 @@
     setProgress(10);
   }
 
+  // ── SCHEDULE CTA TRACKING ───────────────────────────────────
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.sof-btn-schedule');
+    if (btn) {
+      sofTrack('sof_schedule_clicked', {
+        result_level: window._sofLastResultLevel || ''
+      });
+    }
+  });
+
   // ── RESULTS DISPLAY ────────────────────────────────────────
   function showResult(firstName, result) {
     showScreen('sofResultScreen');
+    // Store for schedule CTA tracking
+    window._sofLastResultLevel = result.gaps >= 5 ? 'strongly-recommended' : (result.gaps >= 3 ? 'meaningful-gaps' : 'solid');
+    sofTrack('sof_results_viewed', {
+      gaps_identified: result.gaps,
+      result_level: window._sofLastResultLevel
+    });
 
     var gaps = result.gaps;
     var findings = result.findings;
