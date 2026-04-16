@@ -2,10 +2,12 @@
 // HIGH RIDGE ADVISORY - Analytics & Cookie Consent
 // ============================================
 
-// Google Analytics Measurement ID - Replace with actual ID when available
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+// Real GA4 / GTM container is injected at deploy time via Netlify's
+// Snippet Injection feature (Site settings → Build & deploy → Post
+// processing → Snippet injection). Do not re-add a gtag config call
+// here — it would double-load against a dead placeholder ID.
 
-// Initialize dataLayer and gtag function
+// Initialize dataLayer and gtag function (shared with Netlify-injected GTM)
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 
@@ -23,13 +25,6 @@ if (localStorage.getItem('cookie_consent') === 'accepted') {
     'analytics_storage': 'granted'
   });
 }
-
-// Initialize GA4
-gtag('js', new Date());
-gtag('config', GA_MEASUREMENT_ID, {
-  'anonymize_ip': true,
-  'cookie_flags': 'SameSite=None;Secure'
-});
 
 // ----------------------------------------
 // Cookie Consent Banner
