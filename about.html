@@ -32,6 +32,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#1a365d">
+  <link rel="preload" as="image" href="images/about-hero-1600.webp"
+        imagesrcset="images/about-hero-800.webp 800w, images/about-hero-1600.webp 1600w, images/about-hero-2560.webp 2560w"
+        imagesizes="100vw" fetchpriority="high">
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -174,7 +177,7 @@
 
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="hero hero--compact hero--about-left" style="background-image: url('images/about-hero.webp'); min-height: 75vh;">
+    <section class="hero hero--compact hero--about-left hero--bg-about" style="min-height: 75vh;">
       <div class="hero-content">
         <h1>Who We Are</h1>
         <p class="hero-subtitle">Boutique wealth management providing<br>fiduciary guidance to families and<br>businesses — over 25 years of<br>investment experience.</p>

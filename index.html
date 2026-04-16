@@ -32,6 +32,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#1a365d">
+  <link rel="preload" as="image" href="images/about-hero-1600.webp"
+        imagesrcset="images/about-hero-800.webp 800w, images/about-hero-1600.webp 1600w, images/about-hero-2560.webp 2560w"
+        imagesizes="100vw" fetchpriority="high">
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -168,7 +171,7 @@
 
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="hero hero--left" style="background-image: url('images/about-hero.webp');">
+    <section class="hero hero--left hero--bg-about">
       <div class="hero-content">
         <h1><span class="hero-headline">A Higher Standard of</span><br><span class="typewriter" id="typewriter"></span><span class="typewriter-cursor">|</span></h1>
         <p class="hero-subtitle">Fiduciary guidance for families<br>and businesses who value<br>clarity, integrity, and results.</p>

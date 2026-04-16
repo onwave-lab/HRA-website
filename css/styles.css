@@ -3364,3 +3364,56 @@ button[type="submit"] .btn-spinner + span {
     gap: var(--space-3);
   }
 }
+
+/* ----------------------------------------
+   Responsive hero backgrounds (PSI fix)
+   ---------------------------------------- */
+.hero--bg-about {
+  background-image: url('../images/about-hero-800.webp');
+  background-image: -webkit-image-set(
+    url('../images/about-hero-800.webp') 1x,
+    url('../images/about-hero-1600.webp') 2x
+  );
+  background-image: image-set(
+    url('../images/about-hero-800.webp') 1x,
+    url('../images/about-hero-1600.webp') 2x
+  );
+}
+@media (min-width: 768px) {
+  .hero--bg-about {
+    background-image: url('../images/about-hero-1600.webp');
+    background-image: -webkit-image-set(
+      url('../images/about-hero-1600.webp') 1x,
+      url('../images/about-hero-2560.webp') 2x
+    );
+    background-image: image-set(
+      url('../images/about-hero-1600.webp') 1x,
+      url('../images/about-hero-2560.webp') 2x
+    );
+  }
+}
+
+.hero--bg-services {
+  background-image: url('../images/services-hero-800.webp');
+  background-image: -webkit-image-set(
+    url('../images/services-hero-800.webp') 1x,
+    url('../images/services-hero-1600.webp') 2x
+  );
+  background-image: image-set(
+    url('../images/services-hero-800.webp') 1x,
+    url('../images/services-hero-1600.webp') 2x
+  );
+}
+@media (min-width: 768px) {
+  .hero--bg-services {
+    background-image: url('../images/services-hero-1600.webp');
+    background-image: -webkit-image-set(
+      url('../images/services-hero-1600.webp') 1x,
+      url('../images/services-hero-2560.webp') 2x
+    );
+    background-image: image-set(
+      url('../images/services-hero-1600.webp') 1x,
+      url('../images/services-hero-2560.webp') 2x
+    );
+  }
+}
