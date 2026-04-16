@@ -193,13 +193,28 @@
             <h2>We're Here to Simplify Your Financial Life</h2>
             <p class="text-large">At High Ridge, we believe building and managing wealth shouldn't be difficult. We aim to remove the confusion, deliver high-quality advice, and increase your knowledge and comfort with how your money is being invested—one step at a time.</p>
             <div class="intro-image-mobile">
-              <img src="images/about-steps.jpg" alt="Person walking up steps symbolizing financial progress" width="600" height="400" loading="lazy">
+              <picture>
+                <source type="image/webp"
+                        srcset="images/about-steps-600.webp 600w, images/about-steps-1200.webp 1200w"
+                        sizes="(max-width: 768px) 100vw, 600px">
+                <img src="images/about-steps-600.webp"
+                     alt="Person walking up steps symbolizing financial progress"
+                     width="600" height="400" loading="lazy" fetchpriority="low">
+              </picture>
             </div>
             <p>All decisions we make will be in your best interests.</p>
             <a href="about.html" class="btn btn-primary">Learn About Our Approach</a>
           </div>
           <div class="image-reveal intro-image-desktop" data-animate="fade-in" style="display: flex; justify-content: flex-end;">
-            <img src="images/about-steps.jpg" alt="Person walking up steps symbolizing financial progress" width="600" height="400" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 8px;">
+            <picture>
+              <source type="image/webp"
+                      srcset="images/about-steps-600.webp 600w, images/about-steps-1200.webp 1200w"
+                      sizes="(max-width: 768px) 100vw, 600px">
+              <img src="images/about-steps-600.webp"
+                   alt="Person walking up steps symbolizing financial progress"
+                   width="600" height="400" loading="lazy" fetchpriority="low"
+                   style="width: 100%; height: auto; object-fit: contain; border-radius: 8px;">
+            </picture>
           </div>
         </div>
       </div>
