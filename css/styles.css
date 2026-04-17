@@ -3522,3 +3522,89 @@ button[type="submit"] .btn-spinner + span {
   font-size: var(--text-xs);
   color: var(--gray-500);
 }
+
+/* ----------------------------------------
+   Map facade (replaces Google Maps iframe on index + contact)
+   Zero external resources — fully CSS-rendered so it never goes stale
+   and adds 0 KB of payload.
+   ---------------------------------------- */
+.map-facade {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1024 / 400;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  text-decoration: none;
+  background:
+    /* diagonal "streets" cross-hatch */
+    repeating-linear-gradient(45deg,
+      transparent 0, transparent 28px,
+      rgba(255, 255, 255, 0.35) 28px, rgba(255, 255, 255, 0.35) 30px),
+    repeating-linear-gradient(-45deg,
+      transparent 0, transparent 28px,
+      rgba(255, 255, 255, 0.25) 28px, rgba(255, 255, 255, 0.25) 30px),
+    /* base gradient in brand tones */
+    linear-gradient(135deg, #e8eef5 0%, #d4deea 50%, #c8d4e3 100%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.map-facade::before {
+  /* a stylized "main road" diagonal */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.7) 47%,
+    rgba(255, 255, 255, 0.7) 51%,
+    transparent 53%);
+  pointer-events: none;
+}
+.map-facade:hover,
+.map-facade:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+.map-facade__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+.map-facade__address {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--gray-900);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  max-width: calc(100% - 32px);
+}
+.map-facade__cta {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: var(--navy-800);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
