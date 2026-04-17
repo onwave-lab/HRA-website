@@ -2043,6 +2043,7 @@ p:last-child {
 .footer-logo img {
   height: 80px;
   width: auto;
+  border-radius: 4px;
 }
 
 .footer-logo-text {
@@ -2186,8 +2187,6 @@ p:last-child {
 .cta-calendar {
   background: #fff;
   border-radius: 12px;
-  overflow-y: auto;
-  max-height: 350px;
 }
 
 .cta-copy {
@@ -3425,10 +3424,9 @@ button[type="submit"] .btn-spinner + span {
   position: relative;
   background: #fff;
   border-radius: 12px;
-  padding: 24px;
+  padding: 24px 24px 140px;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  min-height: 360px;
   display: flex;
   flex-direction: column;
 }
