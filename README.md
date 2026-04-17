@@ -58,18 +58,34 @@ Open your terminal and use Claude Code. Here are example prompts:
 
 ## Replacing Images
 
-1. Add your new image to the `images/` folder
+1. Add your new **source image** to `images/originals/` (keep the full-resolution original so variants can be regenerated)
 2. Name it clearly (e.g., `jay-madden.jpg`)
 3. Ask Claude Code: "Replace the current Jay Madden photo with jay-madden.jpg"
 
-### Recommended Image Sizes
+### Responsive Image Pipeline
 
-| Image Type | Recommended Size |
+The site serves images as WebP variants at multiple widths so mobile users don't download desktop-sized images. The script `scripts/optimize-images.sh` handles regeneration:
+
+```bash
+bash scripts/optimize-images.sh
+```
+
+- Reads source files from `images/originals/`
+- Writes WebP variants to `images/` at the widths actually used on the page:
+  - **Heroes:** 800 / 1600 / 2560 px
+  - **Content images:** 600 / 1200 px
+  - **Logos:** 200 px
+- Idempotent — re-run any time sources change or if you need to tweak quality settings
+- Requires `cwebp` (webp package) and `convert` (ImageMagick) on the system
+
+### Recommended Source Image Sizes
+
+| Image Type | Source Size (in `images/originals/`) |
 |------------|------------------|
-| Hero images | 1920 x 1080 px |
-| Team headshots | 400 x 480 px |
-| General images | 600 x 400 px |
-| Logo | 200 x 80 px |
+| Hero images | 2560+ px wide (script generates 800/1600/2560 variants) |
+| Team headshots | 1200+ px wide |
+| General images | 1200+ px wide (script generates 600/1200 variants) |
+| Logo | 1024+ px square |
 
 ---
 
@@ -112,18 +128,59 @@ high-ridge-advisory/
 ├── services.html              # Services overview
 ├── about.html                 # About & team
 ├── contact.html               # Contact form
+├── disclosures.html           # Regulatory disclosures
+├── client-portal.html         # Client hub redirect page
+├── second-opinion.html        # Second Opinion Assessment quiz
 ├── thank-you.html             # Form submission confirmation
+├── 404.html                   # Not-found page
 ├── css/
-│   ├── styles.css             # Main stylesheet
-│   └── animations.css         # Animation definitions
+│   ├── styles.css             # Main stylesheet (design tokens, layout, components)
+│   ├── animations.css         # Scroll-triggered fade/slide animations
+│   └── second-opinion.css     # Quiz-specific styling (sof- namespace)
 ├── js/
-│   └── main.js                # All JavaScript functionality
-├── images/                    # Image assets
+│   ├── main.js                # Navigation, animations, form handlers
+│   ├── analytics.js           # Cookie consent + custom event tracking
+│   ├── booking-modal.js       # TidyCal click-to-load modal
+│   └── second-opinion.js      # Quiz logic (scoring, submission, TidyCal prefill)
+├── images/
+│   ├── originals/             # Full-resolution source files (not served directly)
+│   └── *.webp / *.jpg         # Responsive variants produced by optimize-images.sh
+├── scripts/
+│   └── optimize-images.sh     # Regenerate WebP variants from originals/
+├── docs/
+│   └── superpowers/           # Design specs + implementation plans
+├── netlify/
+│   └── functions/             # Netlify Functions (MailerLite integration, etc.)
+├── session-notes/             # Dated notes from each working session
+├── capture-pages.sh           # Compliance screenshot capture (see CLAUDE.md)
+├── netlify.toml               # Netlify build config (headers, redirects, caching)
+├── sitemap.xml                # Search engine sitemap
+├── robots.txt                 # Crawler directives
 ├── site.webmanifest           # PWA manifest
-├── claude.md                  # Claude Code instructions
+├── claude.md                  # AI session workflow guardrails
+├── CLAUDE.md                  # Project-specific instructions (compliance, etc.)
 ├── quickstart-guide.md        # Detailed user guide
 └── README.md                  # This file
 ```
+
+---
+
+## Performance
+
+The site is optimized for Core Web Vitals. As of 2026-04-16, the production build hits:
+
+- **Desktop Lighthouse:** 100 performance, 95 accessibility, 100 best practices, 100 SEO
+- **Mobile Lighthouse:** 88 performance, 94 accessibility, 100 best practices, 100 SEO
+
+Key optimizations in place:
+
+- **Responsive images** — WebP variants at 800/1600/2560 for heroes, served via `image-set()` + media-query preloads
+- **Deferred third parties** — TidyCal booking calendar and Google Maps load on click, not on page load (see `js/booking-modal.js` and `.map-facade` pattern)
+- **Non-blocking CSS** — `animations.css` loads via preload-swap to avoid delaying first paint
+- **Deferred analytics** — `analytics.js` has `defer` so it never blocks render
+- **Long cache lifetimes** for static assets, configured in `netlify.toml`
+
+See `docs/superpowers/specs/2026-04-16-psi-perf-fix-design.md` for the full architecture and list of future improvements.
 
 ---
 

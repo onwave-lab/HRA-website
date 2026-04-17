@@ -55,3 +55,32 @@ bash capture-pages.sh
 ### Delivery
 
 Send the `compliance-pdfs/` folder contents to Jay for record-keeping and regulatory submission. Re-run the script whenever the site is updated to generate a fresh set from the preview.
+
+---
+
+## Image Optimization
+
+All images in `images/` (except favicons and SVG logos) are WebP variants produced from sources in `images/originals/` by `scripts/optimize-images.sh`. When adding or updating an image:
+
+1. Put the full-resolution source in `images/originals/`
+2. Run `bash scripts/optimize-images.sh`
+3. Reference the generated variants from HTML/CSS (not the original)
+
+The script is idempotent — safe to re-run. Hero images get 800/1600/2560 variants; content images get 600/1200; logos get 200.
+
+**Do not reference files inside `images/originals/` from production HTML or CSS.** Those are source files, not served assets.
+
+---
+
+## Responsive Images & Third-Party Embeds
+
+Two patterns established 2026-04-16 that should be preserved:
+
+- **Hero backgrounds** use CSS `image-set()` with a 768px media query (see `.hero--bg-about` / `.hero--bg-services` in `css/styles.css`) plus media-scoped `<link rel="preload">` hints in `<head>`. New hero pages should follow the same pattern, not inline `style="background-image: url(...)"`.
+- **Third-party widgets that cost significant JS** (TidyCal, Google Maps) use the facade pattern: a static CSS/HTML stand-in that loads the real widget on user interaction. See `.calendar-facade` and `.map-facade` in `css/styles.css`. If you add a new heavy embed (chat widget, video player, etc.), follow the same click-to-load approach rather than loading on page load.
+
+---
+
+## Design Specs and Implementation Plans
+
+Major feature work should be planned in `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` before implementation, with the task-level plan in `docs/superpowers/plans/YYYY-MM-DD-<topic>.md`. This keeps architectural decisions and future-improvement lists discoverable in the repo rather than scattered across session notes.
