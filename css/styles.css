@@ -3591,6 +3591,6 @@ button[type="submit"] .btn-spinner + span {
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
-.navbar:not(.navbar--transparent) .nav-logo img {
+.navbar.is-scrolled .nav-logo img {
   background-color: transparent;
 }
