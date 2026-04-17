@@ -1,8 +1,54 @@
 # PSI Perf Fix — Results
 
 **Date:** 2026-04-16
-**Branch:** `perf/psi-fix`
-**Measured at:** http://localhost:8001/ (mobile emulation / desktop, Chrome DevTools Lighthouse 13.0.2)
+**Branch:** `perf/psi-fix` (merged to `main`, pushed to `origin/main` and `jay/drafts`)
+**Local measurement:** http://localhost:8001/ (Chrome DevTools Lighthouse 13.0.2)
+**Production measurement:** https://drafts--hra-website.netlify.app/ (PSI / Lighthouse 13.0.1)
+
+---
+
+## Production PSI (Netlify preview) — homepage
+
+### Desktop
+
+| Metric | Before (live) | After (preview) | Target | Met? |
+|---|---|---|---|---|
+| Performance score | 38 | **100** | ≥90 | ✅ |
+| FCP | 0.7 s | **0.7 s** | ≤1.0 s | ✅ |
+| LCP | 7.2 s | **0.7 s** | ≤2.5 s | ✅ |
+| TBT | 1,850 ms | **0 ms** | ≤200 ms | ✅ |
+| CLS | 0.011 | **0.012** | ≤0.1 | ✅ |
+| Speed Index | 2.8 s | **0.7 s** | — | — |
+| Accessibility | 95 | **95** | — | ✅ |
+| Best Practices | 77 | **100** | — | ✅ |
+| SEO | 100 | **100** | — | ✅ |
+
+### Mobile
+
+| Metric | Before (live) | After (preview) | Target | Met? |
+|---|---|---|---|---|
+| Performance score | 31 | **88** | ≥75 | ✅ |
+| FCP | 9.9 s | **2.7 s** | ≤2.5 s | ⚠️ close |
+| LCP | 59.7 s | **3.0 s** | ≤4.0 s | ✅ |
+| TBT | 1,260 ms | **0 ms** | ≤300 ms | ✅ |
+| CLS | 0 | **0** | ≤0.1 | ✅ |
+| Speed Index | 13.3 s | **4.4 s** | — | — |
+| Accessibility | 95 | **94** | — | ≈flat |
+| Best Practices | 77 | **100** | — | ✅ |
+| SEO | 100 | **100** | — | ✅ |
+
+### Remaining opportunities visible in the preview PSI
+
+1. **Render-blocking CSS** — `styles.css` + `second-opinion.css` block render (est 430 ms desktop / 1,380 ms mobile). Same preload-swap pattern as `animations.css` would fix both.
+2. **Logo size mismatch** — logo-text-200.webp served 200×200 but displayed ~123×123 on Moto G emulation (~5 KB waste). Could add smaller variants or use `width`/`height` attributes more strictly.
+3. **about-steps-1200.webp on mobile** — browser picked the 1200w variant even at Moto G width. The `sizes="(max-width: 768px) 100vw, 600px"` hint isn't narrowing selection; may need to add a proper `srcset` with pixel densities or more granular breakpoints.
+4. **Forced reflow in main.js** — navbar scroll handler at line 129 queries `offsetHeight` inside the scroll listener. ~56 ms reflow cost on mobile. Cache the values outside the listener for a tiny win.
+
+None of these are blocking — already at 100/88.
+
+---
+
+## Lighthouse (desktop) — homepage — local
 
 ---
 
