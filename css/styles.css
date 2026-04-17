@@ -3532,49 +3532,21 @@ button[type="submit"] .btn-spinner + span {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 1024 / 400;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   text-decoration: none;
-  background:
-    /* diagonal "streets" cross-hatch */
-    repeating-linear-gradient(45deg,
-      transparent 0, transparent 28px,
-      rgba(255, 255, 255, 0.35) 28px, rgba(255, 255, 255, 0.35) 30px),
-    repeating-linear-gradient(-45deg,
-      transparent 0, transparent 28px,
-      rgba(255, 255, 255, 0.25) 28px, rgba(255, 255, 255, 0.25) 30px),
-    /* base gradient in brand tones */
-    linear-gradient(135deg, #e8eef5 0%, #d4deea 50%, #c8d4e3 100%);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.map-facade::before {
-  /* a stylized "main road" diagonal */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg,
-    transparent 45%,
-    rgba(255, 255, 255, 0.7) 47%,
-    rgba(255, 255, 255, 0.7) 51%,
-    transparent 53%);
-  pointer-events: none;
 }
 .map-facade:hover,
 .map-facade:focus-visible {
   transform: translateY(-2px);
   box-shadow: var(--shadow-xl);
 }
-.map-facade__pin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  font-size: 48px;
-  line-height: 1;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
-  pointer-events: none;
+.map-facade__image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 .map-facade__address {
   position: absolute;
