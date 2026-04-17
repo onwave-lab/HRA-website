@@ -3514,6 +3514,8 @@ button[type="submit"] .btn-spinner + span {
 }
 .calendar-facade__cta:hover,
 .calendar-facade__cta:focus-visible {
+  color: #fff;
+  background: var(--navy-800);
   transform: translateY(-1px);
   box-shadow: 0 10px 24px rgba(15, 39, 68, 0.4);
 }
