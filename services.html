@@ -32,9 +32,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#1a365d">
-  <link rel="preload" as="image" href="images/services-hero-1600.webp"
-        imagesrcset="images/services-hero-800.webp 800w, images/services-hero-1600.webp 1600w, images/services-hero-2560.webp 2560w"
-        imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" href="images/services-hero-800.webp" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="images/services-hero-1600.webp" media="(min-width: 768px)" fetchpriority="high">
   <script src="js/analytics.js" defer></script>
 
   <!-- Fonts -->

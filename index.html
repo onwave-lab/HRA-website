@@ -32,9 +32,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#1a365d">
-  <link rel="preload" as="image" href="images/about-hero-1600.webp"
-        imagesrcset="images/about-hero-800.webp 800w, images/about-hero-1600.webp 1600w, images/about-hero-2560.webp 2560w"
-        imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" href="images/about-hero-800.webp" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="images/about-hero-1600.webp" media="(min-width: 768px)" fetchpriority="high">
   <script src="js/analytics.js" defer></script>
 
   <!-- Fonts -->
@@ -633,11 +632,11 @@
               <div class="sof-form-row" style="margin-bottom:0">
                 <div class="sof-form-col">
                   <label class="sof-form-label" for="sofCity">City / Area</label>
-                  <input class="sof-text-input" type="text" id="sofCity" placeholder="McKinney, TX">
+                  <input class="sof-text-input" type="text" id="sofCity" placeholder="McKinney, TX" autocomplete="address-level2">
                 </div>
                 <div class="sof-form-col">
                   <label class="sof-form-label" for="sofBestTime">Best Time to Reach You</label>
-                  <select class="sof-text-input" id="sofBestTime">
+                  <select class="sof-text-input" id="sofBestTime" autocomplete="off">
                     <option value="">No preference</option>
                     <option>Morning (8am&ndash;12pm)</option>
                     <option>Afternoon (12pm&ndash;4pm)</option>
@@ -877,55 +876,55 @@
   <!-- Hidden Netlify Forms (for build-time detection) -->
   <form name="second-opinion" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
     <input type="hidden" name="form-name" value="second-opinion">
-    <input name="bot-field">
-    <input name="first-name">
-    <input name="last-name">
-    <input name="email">
-    <input name="phone">
-    <input name="city">
-    <input name="best-time">
-    <input name="consent">
-    <input name="Q1 Portfolio Size">
-    <input name="Q2 Current Advisor">
-    <input name="Q3 Last Financial Review">
-    <input name="Q4 Top Concerns">
-    <input name="Q5 Risk Tolerance">
-    <input name="Q6 Business or Liquidity Event">
-    <input name="Q7 Retirement Timeline">
-    <input name="Q8 Advisor Priorities">
-    <input name="Quiz Result">
-    <input name="Planning Gaps Found">
-    <input name="Traffic Source">
-    <input name="Traffic Medium">
-    <input name="Campaign Name">
-    <input name="Search Keyword">
-    <input name="Ad Variant">
+    <input name="bot-field" autocomplete="off">
+    <input name="first-name" autocomplete="off">
+    <input name="last-name" autocomplete="off">
+    <input name="email" autocomplete="off">
+    <input name="phone" autocomplete="off">
+    <input name="city" autocomplete="off">
+    <input name="best-time" autocomplete="off">
+    <input name="consent" autocomplete="off">
+    <input name="Q1 Portfolio Size" autocomplete="off">
+    <input name="Q2 Current Advisor" autocomplete="off">
+    <input name="Q3 Last Financial Review" autocomplete="off">
+    <input name="Q4 Top Concerns" autocomplete="off">
+    <input name="Q5 Risk Tolerance" autocomplete="off">
+    <input name="Q6 Business or Liquidity Event" autocomplete="off">
+    <input name="Q7 Retirement Timeline" autocomplete="off">
+    <input name="Q8 Advisor Priorities" autocomplete="off">
+    <input name="Quiz Result" autocomplete="off">
+    <input name="Planning Gaps Found" autocomplete="off">
+    <input name="Traffic Source" autocomplete="off">
+    <input name="Traffic Medium" autocomplete="off">
+    <input name="Campaign Name" autocomplete="off">
+    <input name="Search Keyword" autocomplete="off">
+    <input name="Ad Variant" autocomplete="off">
   </form>
   <form name="second-opinion-no-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
     <input type="hidden" name="form-name" value="second-opinion-no-contact">
-    <input name="bot-field">
-    <input name="first-name">
-    <input name="last-name">
-    <input name="email">
-    <input name="phone">
-    <input name="city">
-    <input name="best-time">
-    <input name="consent">
-    <input name="Q1 Portfolio Size">
-    <input name="Q2 Current Advisor">
-    <input name="Q3 Last Financial Review">
-    <input name="Q4 Top Concerns">
-    <input name="Q5 Risk Tolerance">
-    <input name="Q6 Business or Liquidity Event">
-    <input name="Q7 Retirement Timeline">
-    <input name="Q8 Advisor Priorities">
-    <input name="Quiz Result">
-    <input name="Planning Gaps Found">
-    <input name="Traffic Source">
-    <input name="Traffic Medium">
-    <input name="Campaign Name">
-    <input name="Search Keyword">
-    <input name="Ad Variant">
+    <input name="bot-field" autocomplete="off">
+    <input name="first-name" autocomplete="off">
+    <input name="last-name" autocomplete="off">
+    <input name="email" autocomplete="off">
+    <input name="phone" autocomplete="off">
+    <input name="city" autocomplete="off">
+    <input name="best-time" autocomplete="off">
+    <input name="consent" autocomplete="off">
+    <input name="Q1 Portfolio Size" autocomplete="off">
+    <input name="Q2 Current Advisor" autocomplete="off">
+    <input name="Q3 Last Financial Review" autocomplete="off">
+    <input name="Q4 Top Concerns" autocomplete="off">
+    <input name="Q5 Risk Tolerance" autocomplete="off">
+    <input name="Q6 Business or Liquidity Event" autocomplete="off">
+    <input name="Q7 Retirement Timeline" autocomplete="off">
+    <input name="Q8 Advisor Priorities" autocomplete="off">
+    <input name="Quiz Result" autocomplete="off">
+    <input name="Planning Gaps Found" autocomplete="off">
+    <input name="Traffic Source" autocomplete="off">
+    <input name="Traffic Medium" autocomplete="off">
+    <input name="Campaign Name" autocomplete="off">
+    <input name="Search Keyword" autocomplete="off">
+    <input name="Ad Variant" autocomplete="off">
   </form>
 
   <script src="js/main.js"></script>
