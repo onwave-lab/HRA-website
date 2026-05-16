@@ -39,11 +39,10 @@
   <script src="js/analytics.js" defer></script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond.woff2" crossorigin>
   <link rel="preconnect" href="https://asset-tidycal.b-cdn.net" crossorigin>
   <link rel="preconnect" href="https://tidycal.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -196,13 +195,22 @@
             <span class="overline">Our Story</span>
             <h2>Independent Advice, Your Best Interest</h2>
             <div class="our-story-image-mobile">
-              <img src="images/about-hiking.jpg" alt="Hiker overlooking mountain vista symbolizing the journey to financial success" width="600" height="400" loading="lazy">
+              <img src="images/about-hiking-600.webp"
+                   srcset="images/about-hiking-600.webp 600w, images/about-hiking-1200.webp 1200w"
+                   sizes="(max-width: 768px) 100vw, 600px"
+                   alt="Hiker overlooking mountain vista symbolizing the journey to financial success"
+                   width="600" height="400" loading="lazy">
             </div>
             <p class="text-large">As an independent advisor, we operate with full transparency, using Fidelity and Schwab Institutional platforms as our custodians and offering sophisticated investment solutions through the Csenge Advisory Network.</p>
             <p>Our independence means we answer <strong><em>only to you</em></strong>—not to a parent company, not to shareholders, and not to product quotas. Every recommendation we make is designed to help you achieve your financial goals.</p>
           </div>
           <div class="image-reveal our-story-image-desktop" data-animate="fade-in">
-            <img src="images/about-hiking.jpg" alt="Hiker overlooking mountain vista symbolizing the journey to financial success" width="600" height="400" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 8px;">
+            <img src="images/about-hiking-600.webp"
+                 srcset="images/about-hiking-600.webp 600w, images/about-hiking-1200.webp 1200w"
+                 sizes="(max-width: 768px) 100vw, 600px"
+                 alt="Hiker overlooking mountain vista symbolizing the journey to financial success"
+                 width="600" height="400" loading="lazy"
+                 style="width: 100%; height: auto; object-fit: contain; border-radius: 8px;">
           </div>
         </div>
       </div>

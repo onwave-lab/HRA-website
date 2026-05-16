@@ -34,14 +34,15 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#1a365d">
+  <link rel="preload" as="image" href="images/contact-hero-800.webp" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="images/contact-hero-1600.webp" media="(min-width: 768px)" fetchpriority="high">
   <script src="js/analytics.js" defer></script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond.woff2" crossorigin>
   <link rel="preconnect" href="https://asset-tidycal.b-cdn.net" crossorigin>
   <link rel="preconnect" href="https://tidycal.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -164,7 +165,7 @@
 
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="hero hero--compact" style="background-image: url('images/contact-hero.jpg'); background-position: top center; min-height: 75vh;">
+    <section class="hero hero--compact hero--bg-contact" style="min-height: 75vh;">
       <div class="hero-content" style="text-align: right; position: absolute; right: var(--section-padding-x);">
         <h1 style="margin-left: auto;">Begin the Conversation</h1>
         <p class="hero-subtitle" style="margin-left: auto; max-width: 500px; text-align: right;">We welcome the opportunity to explore how we can serve your family's wealth management needs. Contact us to arrange a confidential discussion about your financial objectives and legacy aspirations.</p>

@@ -3,6 +3,31 @@
    ============================================ */
 
 /* ----------------------------------------
+   Self-hosted Fonts (Latin subset)
+   ---------------------------------------- */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/cormorant-garamond.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/cormorant-garamond-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/inter.woff2') format('woff2');
+}
+
+/* ----------------------------------------
    CSS Custom Properties (Design Tokens)
    ---------------------------------------- */
 :root {
@@ -1059,22 +1084,6 @@ p:last-child {
 @media (max-width: 768px) {
   .hero--about {
     background-image: url('../images/about-hero-768.webp');
-  }
-}
-
-.hero--contact {
-  background-image: url('../images/contact-hero-1920.webp');
-}
-
-@media (max-width: 1200px) {
-  .hero--contact {
-    background-image: url('../images/contact-hero-1200.webp');
-  }
-}
-
-@media (max-width: 768px) {
-  .hero--contact {
-    background-image: url('../images/contact-hero-768.webp');
   }
 }
 
@@ -2974,11 +2983,11 @@ button[type="submit"] .btn-spinner + span {
   }
 
   /* Contact page hero - position water tower and left align text */
-  .hero--compact[style*="contact-hero"] {
+  .hero--compact.hero--bg-contact {
     background-position: 25% center !important;
   }
 
-  .hero--compact[style*="contact-hero"] .hero-content {
+  .hero--compact.hero--bg-contact .hero-content {
     position: absolute !important;
     right: auto !important;
     left: var(--section-padding-x) !important;
@@ -2989,12 +2998,12 @@ button[type="submit"] .btn-spinner + span {
     width: calc(100% - 2 * var(--section-padding-x));
   }
 
-  .hero--compact[style*="contact-hero"] .hero-content h1 {
+  .hero--compact.hero--bg-contact .hero-content h1 {
     margin-left: 0 !important;
     margin-right: auto !important;
   }
 
-  .hero--compact[style*="contact-hero"] .hero-content .hero-subtitle {
+  .hero--compact.hero--bg-contact .hero-content .hero-subtitle {
     margin-left: 0 !important;
     margin-right: auto !important;
     text-align: left;
@@ -3413,6 +3422,32 @@ button[type="submit"] .btn-spinner + span {
     background-image: image-set(
       url('../images/services-hero-1600.webp') 1x,
       url('../images/services-hero-2560.webp') 2x
+    );
+  }
+}
+
+.hero--bg-contact {
+  background-image: url('../images/contact-hero-800.webp');
+  background-image: -webkit-image-set(
+    url('../images/contact-hero-800.webp') 1x,
+    url('../images/contact-hero-1600.webp') 2x
+  );
+  background-image: image-set(
+    url('../images/contact-hero-800.webp') 1x,
+    url('../images/contact-hero-1600.webp') 2x
+  );
+  background-position: top center;
+}
+@media (min-width: 768px) {
+  .hero--bg-contact {
+    background-image: url('../images/contact-hero-1600.webp');
+    background-image: -webkit-image-set(
+      url('../images/contact-hero-1600.webp') 1x,
+      url('../images/contact-hero-1600.webp') 2x
+    );
+    background-image: image-set(
+      url('../images/contact-hero-1600.webp') 1x,
+      url('../images/contact-hero-1600.webp') 2x
     );
   }
 }

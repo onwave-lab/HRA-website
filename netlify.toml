@@ -37,6 +37,11 @@
   [headers.values]
     Cache-Control = "public, max-age=7776000, must-revalidate"
 
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=7776000, must-revalidate"
+
 # Cache CSS and JS with revalidation (may change with updates)
 # Browsers check if file changed, use cache if unchanged
 [[headers]]
