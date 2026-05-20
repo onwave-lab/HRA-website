@@ -3465,6 +3465,7 @@ button[type="submit"] .btn-spinner + span {
   display: flex;
   flex-direction: column;
   container-type: inline-size;
+  cursor: pointer;
 }
 .calendar-facade__label {
   font-family: var(--font-body);
